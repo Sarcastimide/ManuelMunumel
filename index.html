@@ -613,11 +613,11 @@
 <section class="page active" data-screen-label="01 Home" id="page-home">
   <div class="home">
     <div class="home-bg">
-      <img src="images/hero.png" alt="Manuel Muñmel" onerror="this.classList.add('img-missing')">
+      <img src="images/hero.png" alt="Manuel Muñumel" onerror="this.classList.add('img-missing')">
     </div>
     <div class="home-content page-content">
       <div class="home-eyebrow">Portfolio · MMXXVI</div>
-      <h1 class="home-title">Manuel <em>Muñmel</em></h1>
+      <h1 class="home-title">Manuel <em>Muñumel</em></h1>
       <div class="home-tag">Traditional Artist</div>
     </div>
     <div class="home-scroll">
@@ -648,14 +648,14 @@
     </header>
     <div class="about-grid">
       <div class="about-portrait">
-        <img src="images/about.png" alt="Manuel Muñmel" onerror="this.classList.add('img-missing')">
+        <img src="images/about.png" alt="Manuel Muñumel" onerror="this.classList.add('img-missing')">
       </div>
       <div class="about-text">
         <div class="page-eyebrow">Hello —</div>
         <h2>I'm Manuel.</h2>
-        <p><strong>I'm a tattoo artist and pointillist.</strong> My work is built one dot at a time — thousands of tiny points of ink that, together, become light, shadow and form. It's slow, meticulous work, and that patience is exactly what draws me to it.</p>
-        <p>I work in two worlds that feed each other: pointillism on paper and tattooing on skin. The same language of stippling and dotwork runs through both — fine, deliberate marks that build depth without a single solid line.</p>
-        <p>Most of what I do is by appointment. If you're after a custom dotwork tattoo or an original pointillist piece, get in touch — I take on a limited number of projects so each one gets the attention it deserves.</p>
+        <p><strong>I'm a tattoo artist and pointillist.</strong> My work is built one dot at a time — thousands of tiny points of ink that, together, become light, shadow and form. It's slow, m[...]
+        <p>I work in two worlds that feed each other: pointillism on paper and tattooing on skin. The same language of stippling and dotwork runs through both — fine, deliberate marks that buil[...]
+        <p>Most of what I do is by appointment. If you're after a custom dotwork tattoo or an original pointillist piece, get in touch — I take on a limited number of projects so each one gets [...]
         <div class="about-rule"></div>
         <div class="about-meta">
           <div class="about-meta-item">
@@ -689,7 +689,7 @@
       <div class="contact-divider"></div>
       <p class="contact-intro">For commissions, exhibitions, or simply to say hello, I'd love to hear from you. I read every message and respond personally.</p>
       <a class="contact-email" href="mailto:manuel.piaya.munumel@gmail.com">manuel.piaya.munumel@gmail.com</a>
-      <div class="contact-foot">© MMXXVI — Manuel Muñmel</div>
+      <div class="contact-foot">© MMXXVI — Manuel Muñumel</div>
     </div>
   </div>
 </section>
@@ -759,7 +759,7 @@
   function renderLightbox(i){
     currentIdx = (i + works.length) % works.length;
     const w = works[currentIdx];
-    lbWrap.innerHTML = `<img src="${w.src}" alt="Obra ${currentIdx+1}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'— Obra ${currentIdx+1} · pendiente —'}))">`;
+    lbWrap.innerHTML = `<img src="${w.src}" alt="Obra ${currentIdx+1}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'— Obra ${curre[...]
     lbCounter.textContent = String(currentIdx+1).padStart(2,'0') + ' / ' + String(works.length).padStart(2,'0');
   }
 
