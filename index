@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manuel Muñmel — Traditional Artist</title>
+<template id="__bundler_thumbnail" data-bg-color="#1a1a1d">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#1a1a1d"/>
+    <rect x="430" y="250" width="340" height="240" fill="none" stroke="#c9a96b" stroke-width="3"/>
+    <rect x="470" y="290" width="340" height="240" fill="#222226" stroke="#2e2e32" stroke-width="3"/>
+    <text x="600" y="610" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="64" fill="#e9e6df">MM</text>
+    <line x1="540" y1="660" x2="660" y2="660" stroke="#c9a96b" stroke-width="2"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1a1a1d;
+    --bg-2:#222226;
+    --ink:#e9e6df;
+    --ink-dim:#a09c93;
+    --ink-faint:#6b6862;
+    --rule:#2e2e32;
+    --accent:#c9a96b;
+    --shadow: 0 24px 60px -20px rgba(0,0,0,0.7), 0 8px 20px -8px rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', -apple-system, system-ui, sans-serif;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    min-height:100vh;
+  }
+  ::selection{background:var(--accent);color:#1a1a1d}
+
+  /* ─────────── NAV ─────────── */
+  .nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:50;
+    padding:28px 48px;
+    display:flex;
+    justify-content:center;
+    background:linear-gradient(to bottom, rgba(26,26,29,0.85), rgba(26,26,29,0));
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .nav.solid{
+    background:rgba(26,26,29,0.92);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-inner{
+    display:flex;
+    gap:56px;
+    align-items:center;
+  }
+  .nav a{
+    color:var(--ink-dim);
+    text-decoration:none;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:400;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    padding:6px 0;
+    position:relative;
+    transition:color 0.4s ease;
+    cursor:pointer;
+  }
+  .nav a:hover{color:var(--ink)}
+  .nav a.active{color:var(--ink)}
+  .nav a.active::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;
+    bottom:-2px;
+    height:1px;
+    background:var(--accent);
+  }
+
+  /* ─────────── PAGES (SPA transitions) ─────────── */
+  .page{
+    position:fixed;
+    inset:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.7s ease;
+  }
+  .page.active{
+    opacity:1;
+    pointer-events:auto;
+    z-index:1;
+  }
+  .page-content{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s;
+  }
+  .page.active .page-content{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ─────────── HOME ─────────── */
+  .home{
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+  }
+  .home-bg{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .home-bg img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+  }
+  .home-bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse at center, rgba(26,26,29,0.25) 0%, rgba(26,26,29,0.7) 100%),
+      linear-gradient(to bottom, rgba(26,26,29,0.55) 0%, rgba(26,26,29,0.35) 40%, rgba(26,26,29,0.85) 100%);
+    pointer-events:none;
+  }
+  .home-content{
+    position:relative;
+    z-index:2;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:0 32px;
+    pointer-events:none;
+  }
+  .home-eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    font-weight:400;
+    letter-spacing:0.45em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:36px;
+  }
+  .home-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-size:clamp(64px, 10vw, 168px);
+    line-height:0.95;
+    letter-spacing:-0.02em;
+    margin:0;
+    color:var(--ink);
+  }
+  .home-title em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--ink);
+  }
+  .home-tag{
+    margin-top:40px;
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    font-weight:400;
+    letter-spacing:0.4em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .home-tag::before, .home-tag::after{
+    content:"";
+    width:48px;
+    height:1px;
+    background:var(--ink-faint);
+  }
+  .home-scroll{
+    position:absolute;
+    bottom:36px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    font-family:'Inter',sans-serif;
+    font-size:10px;
+    letter-spacing:0.4em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+  }
+  .home-scroll-line{
+    width:1px;
+    height:36px;
+    background:linear-gradient(to bottom, var(--ink-faint), transparent);
+    animation:scrollPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollPulse{
+    0%,100%{opacity:0.3;transform:scaleY(0.6)}
+    50%{opacity:1;transform:scaleY(1)}
+  }
+
+  /* ─────────── GALLERY ─────────── */
+  .gallery-page{
+    padding:140px 48px 96px;
+  }
+  .page-header{
+    max-width:1400px;
+    margin:0 auto 64px;
+    text-align:center;
+  }
+  .page-eyebrow{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.4em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .page-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-style:italic;
+    font-size:clamp(48px, 6vw, 96px);
+    line-height:1;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+  }
+  .page-sub{
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    color:var(--ink-dim);
+    max-width:520px;
+    margin:0 auto;
+    line-height:1.7;
+  }
+  .gallery{
+    max-width:1400px;
+    margin:0 auto;
+    columns:3;
+    column-gap:24px;
+  }
+  .gallery-item{
+    break-inside:avoid;
+    margin-bottom:24px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    background:var(--bg-2);
+    border:1px solid var(--rule);
+    transition:transform 0.5s cubic-bezier(.2,.7,.2,1), border-color 0.5s ease;
+  }
+  .gallery-item:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+  }
+  .gallery-item img{
+    width:100%;
+    display:block;
+    object-fit:cover;
+  }
+  .gallery-item .meta{
+    position:absolute;
+    inset:auto 0 0 0;
+    padding:20px 22px 18px;
+    background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+    pointer-events:none;
+  }
+  .gallery-item:hover .meta{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .meta-title{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--ink);
+    margin:0;
+  }
+  .meta-medium{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-top:4px;
+  }
+
+  /* Masonry varied heights */
+  .gallery-item.h1 img{height:380px}
+  .gallery-item.h2 img{height:480px}
+  .gallery-item.h3 img{height:560px}
+  .gallery-item.h4 img{height:320px}
+  .gallery-item.h5 img{height:520px}
+
+  /* ─────────── ABOUT ─────────── */
+  .about-page{
+    padding:140px 48px 96px;
+  }
+  .about-grid{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 1.2fr;
+    gap:80px;
+    align-items:start;
+  }
+  .about-portrait{
+    position:relative;
+  }
+  .about-portrait img{
+    width:100%;
+    height:560px;
+    object-fit:cover;
+    display:block;
+    border:1px solid var(--rule);
+  }
+  .about-portrait::before{
+    content:"";
+    position:absolute;
+    top:20px;left:-20px;
+    width:100%;height:100%;
+    border:1px solid var(--accent);
+    z-index:-1;
+  }
+  .about-text{
+    padding-top:20px;
+  }
+  .about-text .page-eyebrow{
+    text-align:left;
+    margin-bottom:14px;
+  }
+  .about-text h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-style:italic;
+    font-size:clamp(40px, 4.5vw, 64px);
+    line-height:1;
+    margin:0 0 32px;
+  }
+  .about-text p{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.85;
+    color:var(--ink-dim);
+    margin:0 0 18px;
+  }
+  .about-text p strong{
+    color:var(--ink);
+    font-weight:400;
+  }
+  .about-rule{
+    width:48px;
+    height:1px;
+    background:var(--accent);
+    margin:36px 0 24px;
+  }
+  .about-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:32px;
+  }
+  .about-meta-item .label{
+    font-family:'Inter',sans-serif;
+    font-size:10px;
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+  .about-meta-item .value{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:20px;
+    color:var(--ink);
+  }
+
+  /* ─────────── CONTACT ─────────── */
+  .contact-page{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:96px 48px 48px;
+  }
+  .contact-inner{
+    text-align:center;
+    max-width:720px;
+  }
+  .contact-inner .page-eyebrow{margin-bottom:24px}
+  .contact-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-style:italic;
+    font-size:clamp(56px, 7vw, 112px);
+    line-height:1;
+    margin:0 0 40px;
+  }
+  .contact-divider{
+    width:80px;
+    height:1px;
+    background:var(--accent);
+    margin:0 auto 40px;
+  }
+  .contact-intro{
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.8;
+    color:var(--ink-dim);
+    margin:0 auto 48px;
+    max-width:480px;
+  }
+  .contact-email{
+    display:inline-block;
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(20px, 2.4vw, 32px);
+    color:var(--ink);
+    text-decoration:none;
+    padding:18px 36px;
+    border:1px solid var(--rule);
+    transition:all 0.4s ease;
+    letter-spacing:0.02em;
+  }
+  .contact-email:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+    letter-spacing:0.05em;
+  }
+  .contact-foot{
+    margin-top:56px;
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+
+  /* ─────────── LIGHTBOX ─────────── */
+  .lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(10,10,12,0.96);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+  .lightbox.open{display:flex;opacity:1}
+  .lightbox-content{
+    position:relative;
+    max-width:90vw;
+    max-height:88vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .lightbox-img-wrap{
+    background:var(--bg-2);
+    border:1px solid var(--rule);
+    max-width:90vw;
+    max-height:78vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .lightbox-img-wrap img{
+    max-width:100%;
+    max-height:78vh;
+    display:block;
+  }
+  .lightbox-img-wrap .placeholder{
+    width:60vw;
+    height:70vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:repeating-linear-gradient(45deg, #25252a 0 12px, #1f1f23 12px 24px);
+    color:var(--ink-faint);
+    font-family:'Inter',monospace;
+    font-size:13px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+  .lightbox-info{
+    margin-top:20px;
+    text-align:center;
+  }
+  .lightbox-info h3{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:300;
+    font-size:24px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .lightbox-info p{
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0;
+  }
+  .lightbox-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:48px;
+    height:48px;
+    border:1px solid var(--rule);
+    background:rgba(26,26,29,0.7);
+    color:var(--ink);
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.3s ease;
+    backdrop-filter:blur(4px);
+  }
+  .lightbox-nav:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  .lightbox-prev{left:32px}
+  .lightbox-next{right:32px}
+  .lightbox-close{
+    position:absolute;
+    top:24px;right:32px;
+    width:40px;height:40px;
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--ink);
+    font-size:18px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+  }
+  .lightbox-close:hover{
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+  .lightbox-counter{
+    position:absolute;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    font-family:'Inter',sans-serif;
+    font-size:11px;
+    letter-spacing:0.3em;
+    color:var(--ink-faint);
+  }
+
+  /* placeholder shown when an image file is missing */
+  .img-missing{
+    background:repeating-linear-gradient(45deg, #25252a 0 12px, #1f1f23 12px 24px) !important;
+  }
+
+  /* responsive */
+  @media (max-width: 900px){
+    .nav{padding:20px 24px}
+    .nav-inner{gap:28px}
+    .nav a{font-size:11px}
+    .gallery{columns:2}
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .about-portrait img{height:420px}
+    .gallery-page,.about-page{padding:120px 24px 64px}
+  }
+  @media (max-width: 560px){
+    .gallery{columns:1}
+    .lightbox-prev{left:12px}
+    .lightbox-next{right:12px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────── NAV ─────────── -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a data-page="home" class="active">Home</a>
+    <a data-page="gallery">Gallery</a>
+    <a data-page="about">About Me</a>
+    <a data-page="contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ─────────── HOME ─────────── -->
+<section class="page active" data-screen-label="01 Home" id="page-home">
+  <div class="home">
+    <div class="home-bg">
+      <img src="images/hero.png" alt="Manuel Muñmel" onerror="this.classList.add('img-missing')">
+    </div>
+    <div class="home-content page-content">
+      <div class="home-eyebrow">Portfolio · MMXXVI</div>
+      <h1 class="home-title">Manuel <em>Muñmel</em></h1>
+      <div class="home-tag">Traditional Artist</div>
+    </div>
+    <div class="home-scroll">
+      <span>Explore</span>
+      <span class="home-scroll-line"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── GALLERY ─────────── -->
+<section class="page" data-screen-label="02 Gallery" id="page-gallery">
+  <div class="gallery-page page-content">
+    <header class="page-header">
+      <div class="page-eyebrow">— Selected Works —</div>
+      <h1 class="page-title">Gallery</h1>
+      <p class="page-sub">A curated collection of recent pieces. Click any work to view in full.</p>
+    </header>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ─────────── ABOUT ─────────── -->
+<section class="page" data-screen-label="03 About" id="page-about">
+  <div class="about-page page-content">
+    <header class="page-header">
+      <div class="page-eyebrow">— The Artist —</div>
+      <h1 class="page-title">About Me</h1>
+    </header>
+    <div class="about-grid">
+      <div class="about-portrait">
+        <img src="images/about.png" alt="Manuel Muñmel" onerror="this.classList.add('img-missing')">
+      </div>
+      <div class="about-text">
+        <div class="page-eyebrow">Hello —</div>
+        <h2>I'm Manuel.</h2>
+        <p><strong>I'm a tattoo artist and pointillist.</strong> My work is built one dot at a time — thousands of tiny points of ink that, together, become light, shadow and form. It's slow, meticulous work, and that patience is exactly what draws me to it.</p>
+        <p>I work in two worlds that feed each other: pointillism on paper and tattooing on skin. The same language of stippling and dotwork runs through both — fine, deliberate marks that build depth without a single solid line.</p>
+        <p>Most of what I do is by appointment. If you're after a custom dotwork tattoo or an original pointillist piece, get in touch — I take on a limited number of projects so each one gets the attention it deserves.</p>
+        <div class="about-rule"></div>
+        <div class="about-meta">
+          <div class="about-meta-item">
+            <div class="label">Based in</div>
+            <div class="value">Spain</div>
+          </div>
+          <div class="about-meta-item">
+            <div class="label">Medium</div>
+            <div class="value">Tattoo & Pointillism</div>
+          </div>
+          <div class="about-meta-item">
+            <div class="label">Working since</div>
+            <div class="value">2018</div>
+          </div>
+          <div class="about-meta-item">
+            <div class="label">Commissions</div>
+            <div class="value">By request</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── CONTACT ─────────── -->
+<section class="page" data-screen-label="04 Contact" id="page-contact">
+  <div class="contact-page page-content">
+    <div class="contact-inner">
+      <div class="page-eyebrow">— Get in Touch —</div>
+      <h1 class="contact-title">Let's talk.</h1>
+      <div class="contact-divider"></div>
+      <p class="contact-intro">For commissions, exhibitions, or simply to say hello, I'd love to hear from you. I read every message and respond personally.</p>
+      <a class="contact-email" href="mailto:manuel.piaya.munumel@gmail.com">manuel.piaya.munumel@gmail.com</a>
+      <div class="contact-foot">© MMXXVI — Manuel Muñmel</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────── LIGHTBOX ─────────── -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close" aria-label="Close">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Previous">‹</button>
+  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Next">›</button>
+  <div class="lightbox-content">
+    <div class="lightbox-img-wrap" id="lb-wrap"></div>
+  </div>
+  <div class="lightbox-counter" id="lb-counter">01 / 18</div>
+</div>
+
+<script>
+  // ───── Gallery generation ─────
+  const WORK_COUNT = 18;
+  const heights = ["h2","h3","h1","h4","h5","h2","h3","h1","h2","h4","h5","h1","h3","h2","h4","h5","h2","h1"];
+  const works = Array.from({length: WORK_COUNT}, (_, i) => ({
+    src: `images/work-${String(i+1).padStart(2,'0')}.jpg`,
+    h: heights[i] || "h2"
+  }));
+
+  const galleryEl = document.getElementById('gallery');
+  works.forEach((w, i) => {
+    const item = document.createElement('div');
+    item.className = `gallery-item ${w.h}`;
+    item.dataset.index = i;
+    item.innerHTML = `
+      <img src="${w.src}" alt="Obra ${i+1}" loading="lazy" onerror="this.classList.add('img-missing')">
+    `;
+    item.addEventListener('click', () => openLightbox(i));
+    galleryEl.appendChild(item);
+  });
+
+  // ───── SPA routing ─────
+  const links = document.querySelectorAll('.nav a[data-page]');
+  const pages = document.querySelectorAll('.page');
+  const navEl = document.getElementById('nav');
+
+  function go(name){
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-'+name));
+    links.forEach(l => l.classList.toggle('active', l.dataset.page === name));
+    navEl.classList.toggle('solid', name !== 'home');
+    history.replaceState(null,'','#'+name);
+    // scroll active page to top
+    const active = document.getElementById('page-'+name);
+    if(active) active.scrollTop = 0;
+  }
+  links.forEach(l => l.addEventListener('click', e => { e.preventDefault(); go(l.dataset.page); }));
+
+  // initial route from hash
+  const initial = (location.hash || '#home').slice(1);
+  if(['home','gallery','about','contact'].includes(initial)) go(initial);
+
+  // ───── Lightbox ─────
+  const lb = document.getElementById('lightbox');
+  const lbWrap = document.getElementById('lb-wrap');
+  const lbCounter = document.getElementById('lb-counter');
+  let currentIdx = 0;
+
+  function getSlotImageSrc(slotId){
+    return null;
+  }
+
+  function renderLightbox(i){
+    currentIdx = (i + works.length) % works.length;
+    const w = works[currentIdx];
+    lbWrap.innerHTML = `<img src="${w.src}" alt="Obra ${currentIdx+1}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'— Obra ${currentIdx+1} · pendiente —'}))">`;
+    lbCounter.textContent = String(currentIdx+1).padStart(2,'0') + ' / ' + String(works.length).padStart(2,'0');
+  }
+
+  function openLightbox(i){
+    renderLightbox(i);
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => renderLightbox(currentIdx-1));
+  document.getElementById('lb-next').addEventListener('click', () => renderLightbox(currentIdx+1));
+  lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') renderLightbox(currentIdx-1);
+    if(e.key === 'ArrowRight') renderLightbox(currentIdx+1);
+  });
+</script>
+</body>
+</html>
