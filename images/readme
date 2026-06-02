@@ -1,0 +1,76 @@
+# Portfolio — Manuel Muñmel
+
+Web de portfolio para un artista de tatuaje y puntillismo (dotwork).
+Una sola página con navegación tipo SPA: **Home · Gallery · About Me · Contact**,
+galería en mosaico y visor (lightbox) con flechas.
+
+---
+
+## 📁 Estructura
+
+```
+index.html          ← la web (no hace falta tocarla)
+images/
+  hero.png          ← foto de portada (Home)
+  about.png         ← foto del artista (About Me)
+  work-01.png       ← obra 1 de la galería
+  work-02.png       ← obra 2
+  ...
+  work-18.png       ← obra 18
+README.md
+```
+
+---
+
+## 🖼️ Cómo cambiar las fotos
+
+Sustituye los archivos dentro de `images/` por los tuyos **manteniendo el mismo nombre y extensión**.
+
+| Archivo | Dónde aparece | Orientación recomendada | Tamaño sugerido |
+|---|---|---|---|
+| `hero.png` | Portada (Home) | Horizontal | ≈ 1600 × 1000 px |
+| `about.png` | About Me | Vertical | ≈ 900 × 1120 px |
+| `work-01.png` … `work-18.png` | Galería | Cualquiera (el mosaico se adapta) | lado largo ≥ 1000 px |
+
+> El nombre tiene que coincidir **exactamente**. Si tu foto de portada es `mi_foto.jpg`,
+> renómbrala a `hero.png` (o cámbiale solo el nombre y, si quieres usar `.jpg`,
+> ajusta las referencias dentro de `index.html`).
+
+Si una imagen falta, en su lugar se muestra un hueco con rayas para que sepas cuál
+te queda por subir.
+
+---
+
+## 🚀 Publicar en GitHub Pages
+
+1. Crea un repositorio en GitHub (por ejemplo `portfolio`).
+2. Sube **`index.html`** y la carpeta **`images/`** completa a la **raíz** del repo.
+3. Ve a **Settings → Pages**.
+4. En *Source* elige la rama `main` y la carpeta `/ (root)`, y pulsa **Save**.
+5. En 1–2 minutos tu web estará en:
+   `https://TU-USUARIO.github.io/portfolio/`
+
+> ⚠️ El archivo principal **debe llamarse `index.html`** y estar en la raíz del repo
+> para que GitHub Pages lo muestre como página de inicio.
+
+---
+
+## ✏️ Editar textos
+
+Todo el contenido está dentro de `index.html`:
+
+- **Nombre y subtítulo de portada** → busca `Manuel` / `Traditional Artist`.
+- **Texto de About Me** → sección `<!-- ─── ABOUT ─── -->`.
+- **Email de contacto** → busca `manuel.piaya.munumel@gmail.com` (aparece en el enlace `mailto:`).
+
+---
+
+## ⌨️ Atajos del visor (lightbox)
+
+- **← / →** : imagen anterior / siguiente
+- **Esc** : cerrar
+- Click fuera de la imagen : cerrar
+
+---
+
+© Manuel Muñmel
