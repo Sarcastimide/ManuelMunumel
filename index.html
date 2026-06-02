@@ -602,10 +602,10 @@
 <!-- ─────────── NAV ─────────── -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a data-page="home" class="active">Home</a>
-    <a data-page="gallery">Gallery</a>
-    <a data-page="about">About Me</a>
-    <a data-page="contact">Contact</a>
+    <a href="#home" data-page="home" class="active">Home</a>
+    <a href="#gallery" data-page="gallery">Gallery</a>
+    <a href="#about" data-page="about">About Me</a>
+    <a href="#contact" data-page="contact">Contact</a>
   </div>
 </nav>
 
@@ -653,9 +653,9 @@
       <div class="about-text">
         <div class="page-eyebrow">Hello —</div>
         <h2>I'm Manuel.</h2>
-        <p><strong>I'm a tattoo artist and pointillist.</strong> My work is built one dot at a time — thousands of tiny points of ink that, together, become light, shadow and form. It's slow, m[...]
-        <p>I work in two worlds that feed each other: pointillism on paper and tattooing on skin. The same language of stippling and dotwork runs through both — fine, deliberate marks that buil[...]
-        <p>Most of what I do is by appointment. If you're after a custom dotwork tattoo or an original pointillist piece, get in touch — I take on a limited number of projects so each one gets [...]
+        <p><strong>I'm a tattoo artist and pointillist.</strong> My work is built one dot at a time — thousands of tiny points of ink that, together, become light, shadow and form. It's slow, meditative, and intentional.</p>
+        <p>I work in two worlds that feed each other: pointillism on paper and tattooing on skin. The same language of stippling and dotwork runs through both — fine, deliberate marks that build meaning and substance.</p>
+        <p>Most of what I do is by appointment. If you're after a custom dotwork tattoo or an original pointillist piece, get in touch — I take on a limited number of projects so each one gets the attention it deserves.</p>
         <div class="about-rule"></div>
         <div class="about-meta">
           <div class="about-meta-item">
@@ -735,12 +735,26 @@
     pages.forEach(p => p.classList.toggle('active', p.id === 'page-'+name));
     links.forEach(l => l.classList.toggle('active', l.dataset.page === name));
     navEl.classList.toggle('solid', name !== 'home');
-    history.replaceState(null,'','#'+name);
+    history.pushState(null, '', '#' + name);
     // scroll active page to top
     const active = document.getElementById('page-'+name);
     if(active) active.scrollTop = 0;
   }
-  links.forEach(l => l.addEventListener('click', e => { e.preventDefault(); go(l.dataset.page); }));
+
+  links.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      go(l.dataset.page);
+    });
+  });
+
+  // Handle browser back/forward navigation
+  window.addEventListener('hashchange', () => {
+    const initial = (location.hash || '#home').slice(1);
+    if(['home','gallery','about','contact'].includes(initial)) {
+      go(initial);
+    }
+  });
 
   // initial route from hash
   const initial = (location.hash || '#home').slice(1);
@@ -759,7 +773,7 @@
   function renderLightbox(i){
     currentIdx = (i + works.length) % works.length;
     const w = works[currentIdx];
-    lbWrap.innerHTML = `<img src="${w.src}" alt="Obra ${currentIdx+1}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'— Obra ${curre[...]
+    lbWrap.innerHTML = `<img src="${w.src}" alt="Obra ${currentIdx+1}" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'placeholder',textContent:'— Obra ${currentIdx+1} no encontrada —'}))">`;
     lbCounter.textContent = String(currentIdx+1).padStart(2,'0') + ' / ' + String(works.length).padStart(2,'0');
   }
 
