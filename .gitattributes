@@ -1,0 +1,13 @@
+# Archivos binarios - no editar como texto
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.bmp binary
+*.ico binary
+*.webp binary
+*.svg binary
+*.mp4 binary
+*.mp3 binary
+*.zip binary
+*.pdf binary
